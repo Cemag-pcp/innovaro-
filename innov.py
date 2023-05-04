@@ -36,9 +36,9 @@ sa = gspread.service_account(filename)
 # Conectando com google sheets e acessando Análise Previsão de Consumo (CMM / NTP ) DEE
 
 sheet = 'Análise Previsão de Consumo (CMM / NTP ) DEE'
-worksheet = 'Dadossimulacaoteste'
-worksheet2 = 'Est. ProduçãoTeste'
-worksheet3 = 'Dados PedidosTeste'
+worksheet = 'Dados Simulação'
+worksheet2 = 'Est. Produção'
+worksheet3 = 'Dados Pedidos'
 
 sh1 = sa.open(sheet)
 wks1 = sh1.worksheet(worksheet)
@@ -440,14 +440,47 @@ tabela_recursos_csv = tabela_recursos.copy()
 tabela_recursos_csv = tabela_recursos_csv.replace('=','',regex=True)
 tabela_recursos_csv.replace('"','',regex=True,inplace=True)
 
+tabela_recursos_csv['Média'] = tabela_recursos_csv['Média'].replace(",",".",regex=True)
+tabela_recursos_csv['Média'] = tabela_recursos_csv['Média'].replace("",0,regex=True)
+tabela_recursos_csv['Média'] = tabela_recursos_csv['Média'].astype(float)
+
+tabela_recursos_csv['CMA'] = tabela_recursos_csv['CMA'].replace(",",".",regex=True)
+tabela_recursos_csv['CMA'] = tabela_recursos_csv['CMA'].replace("",0,regex=True)
+tabela_recursos_csv['CMA'] = tabela_recursos_csv['CMA'].astype(float)
+
+tabela_recursos_csv['Simulado'] = tabela_recursos_csv['Simulado'].replace(",",".",regex=True)
+tabela_recursos_csv['Simulado'] = tabela_recursos_csv['Simulado'].replace("",0,regex=True)
+tabela_recursos_csv['Simulado'] = tabela_recursos_csv['Simulado'].astype(float)
+
+tabela_recursos_csv['Qtd.Est.'] = tabela_recursos_csv['Qtd.Est.'].replace(",",".",regex=True)
+tabela_recursos_csv['Qtd.Est.'] = tabela_recursos_csv['Qtd.Est.'].replace("",0,regex=True)
+tabela_recursos_csv['Qtd.Est.'] = tabela_recursos_csv['Qtd.Est.'].astype(float)
+
+tabela_recursos_csv['Ped.Pend.'] = tabela_recursos_csv['Ped.Pend.'].replace(",",".",regex=True)
+tabela_recursos_csv['Ped.Pend.'] = tabela_recursos_csv['Ped.Pend.'].replace("",0,regex=True)
+tabela_recursos_csv['Ped.Pend.'] = tabela_recursos_csv['Ped.Pend.'].astype(float)
+
+tabela_recursos_csv['Saldo'] = tabela_recursos_csv['Saldo'].replace(",",".",regex=True)
+tabela_recursos_csv['Saldo'] = tabela_recursos_csv['Saldo'].replace("",0,regex=True)
+tabela_recursos_csv['Saldo'] = tabela_recursos_csv['Saldo'].astype(float)
+
+tabela_recursos_csv['Cust.Unit.'] = tabela_recursos_csv['Cust.Unit.'].replace(",",".",regex=True)
+tabela_recursos_csv['Cust.Unit.'] = tabela_recursos_csv['Cust.Unit.'].replace("",0,regex=True)
+tabela_recursos_csv['Cust.Unit.'] = tabela_recursos_csv['Cust.Unit.'].astype(float)
+
+tabela_recursos_csv['DEE'] = tabela_recursos_csv['DEE'].replace(",",".",regex=True)
+tabela_recursos_csv['DEE'] = tabela_recursos_csv['DEE'].replace("",0,regex=True)
+tabela_recursos_csv['DEE'] = tabela_recursos_csv['DEE'].astype(float)
+
 #Limpar valores nulos e transformar em lista
 tabela_recursos_csv_lista = tabela_recursos_csv.fillna('').values.tolist()
 
 #Apagar valores da planilha
-sh1.values_clear("'Dadossimulacaoteste'!E2:O10000")
+sh1.values_clear("'Dados Simulação'!E2:O")
 
 #Atualizar valores da planilha
 wks1.update('E2:O', tabela_recursos_csv_lista)
+
 # ------------------------------------
 # Ajustando a planilha Análise Previsão de Consumo (CMM / NTP ) DEE
 
@@ -563,10 +596,14 @@ tabela_saldos_csv = tabela_saldos.copy()
 tabela_saldos_csv = tabela_saldos_csv.replace('=','',regex=True)
 tabela_saldos_csv.replace('"','',regex=True,inplace=True)
 
+tabela_saldos_csv['Saldo'] = tabela_saldos_csv['Saldo'].replace(",",".",regex=True)
+tabela_saldos_csv['Saldo'] = tabela_saldos_csv['Saldo'].replace("",0,regex=True)
+tabela_saldos_csv['Saldo'] = tabela_saldos_csv['Saldo'].astype(float)
+
 #Limpar valores nulos e transformar em lista
 tabela_saldos_csv_lista = tabela_saldos_csv.fillna('').values.tolist()
 
-sh1.values_clear("'Est. ProduçãoTeste'!N3:U10000")
+sh1.values_clear("'Est. Produção'!N3:U")
 
 #Atualizar valores da planilha
 wks2.update('N3:U', tabela_saldos_csv_lista)
@@ -660,10 +697,18 @@ tabela_analise_csv = tabela_analise_csv.replace('=','',regex=True)
 tabela_analise_csv.replace('"','',regex=True,inplace=True)
 #tabela_analise_csv['Data Entrega'] = pd.to_datetime(tabela_analise_csv['Data Entrega'])
 
+tabela_analise_csv['Qde Ped'] = tabela_analise_csv['Qde Ped'].replace(",",".",regex=True)
+tabela_analise_csv['Qde Ped'] = tabela_analise_csv['Qde Ped'].replace("",0,regex=True)
+tabela_analise_csv['Qde Ped'] = tabela_analise_csv['Qde Ped'].astype(float)
+
+tabela_analise_csv['Qde Pend'] = tabela_analise_csv['Qde Pend'].replace(",",".",regex=True)
+tabela_analise_csv['Qde Pend'] = tabela_analise_csv['Qde Pend'].replace("",0,regex=True)
+tabela_analise_csv['Qde Pend'] = tabela_analise_csv['Qde Pend'].astype(float)
+
 #Limpar valores nulos e transformar em lista
 tabela_analise_csv_lista = tabela_analise_csv.fillna('').values.tolist()
 
-sh1.values_clear("'Dados PedidosTeste'!B2:Y10000")
+sh1.values_clear("'Dados Pedidos'!B2:Y")
 
 #Atualizar valores da planilha
 wks3.update('B2:Y', tabela_analise_csv_lista)
